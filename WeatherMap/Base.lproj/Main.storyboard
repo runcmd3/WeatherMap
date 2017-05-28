@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,20 +30,53 @@
                                 <rect key="frame" x="0.0" y="334" width="375" height="333.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Condition" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pi0-pp-gBj">
+                                <rect key="frame" x="285" y="255.5" width="74" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4cg-Hl-O4b">
+                                <rect key="frame" x="324.5" y="284.5" width="34.5" height="38.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Icd-e3-JDl">
+                                <rect key="frame" x="207" y="234" width="64" height="64"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbb-fj-tYV">
+                                <rect key="frame" x="279" y="226" width="80" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="pi0-pp-gBj" firstAttribute="leading" secondItem="Icd-e3-JDl" secondAttribute="trailing" constant="14" id="1Z9-oT-9G6"/>
+                            <constraint firstItem="pi0-pp-gBj" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="3Q0-te-Fdc"/>
                             <constraint firstItem="O9k-bn-Rhq" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="4qp-Hz-jSL"/>
                             <constraint firstItem="z7x-XB-cwN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="6EK-Df-Sia"/>
                             <constraint firstItem="z7x-XB-cwN" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="7eS-k2-PzW"/>
                             <constraint firstAttribute="trailing" secondItem="z7x-XB-cwN" secondAttribute="trailing" id="Bdv-cP-j3W"/>
                             <constraint firstAttribute="bottom" secondItem="O9k-bn-Rhq" secondAttribute="bottom" id="Bka-Jp-x6J"/>
+                            <constraint firstItem="4cg-Hl-O4b" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="HBi-ep-4Mm"/>
+                            <constraint firstItem="pi0-pp-gBj" firstAttribute="centerY" secondItem="Icd-e3-JDl" secondAttribute="centerY" id="PEy-4X-W22"/>
                             <constraint firstItem="O9k-bn-Rhq" firstAttribute="height" secondItem="z7x-XB-cwN" secondAttribute="height" id="Wwi-eu-9i2"/>
+                            <constraint firstItem="vbb-fj-tYV" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="XpG-Lu-4hC"/>
                             <constraint firstItem="z7x-XB-cwN" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="h2z-CD-WTJ"/>
+                            <constraint firstItem="4cg-Hl-O4b" firstAttribute="top" secondItem="pi0-pp-gBj" secondAttribute="bottom" constant="8" id="jti-5v-aHk"/>
                             <constraint firstAttribute="trailing" secondItem="O9k-bn-Rhq" secondAttribute="trailing" id="k71-wU-lqT"/>
+                            <constraint firstItem="O9k-bn-Rhq" firstAttribute="top" secondItem="4cg-Hl-O4b" secondAttribute="bottom" constant="11" id="n6t-4T-Lde"/>
+                            <constraint firstItem="pi0-pp-gBj" firstAttribute="top" secondItem="vbb-fj-tYV" secondAttribute="bottom" constant="8" id="u7w-Ir-hQl"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cityLbl" destination="vbb-fj-tYV" id="LQY-Cn-vcC"/>
+                        <outlet property="conditionLbl" destination="pi0-pp-gBj" id="iPK-dr-E05"/>
+                        <outlet property="degreeLbl" destination="4cg-Hl-O4b" id="LkA-9l-iQv"/>
+                        <outlet property="imgView" destination="Icd-e3-JDl" id="33n-An-CTk"/>
                         <outlet property="mapView" destination="z7x-XB-cwN" id="QxZ-7e-Gb7"/>
                     </connections>
                 </viewController>
