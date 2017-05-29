@@ -26,6 +26,13 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="z7x-XB-cwN">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="333.5"/>
                             </mapView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="box" translatesAutoresizingMaskIntoConstraints="NO" id="ukK-PQ-Ipz">
+                                <rect key="frame" x="194" y="216" width="179" height="115"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="179" id="Sge-k9-nxt"/>
+                                    <constraint firstAttribute="height" constant="115" id="mti-5K-Tp0"/>
+                                </constraints>
+                            </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="O9k-bn-Rhq">
                                 <rect key="frame" x="0.0" y="334" width="375" height="333.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -62,14 +69,17 @@
                             <constraint firstAttribute="trailing" secondItem="z7x-XB-cwN" secondAttribute="trailing" id="Bdv-cP-j3W"/>
                             <constraint firstAttribute="bottom" secondItem="O9k-bn-Rhq" secondAttribute="bottom" id="Bka-Jp-x6J"/>
                             <constraint firstItem="4cg-Hl-O4b" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="HBi-ep-4Mm"/>
+                            <constraint firstItem="ukK-PQ-Ipz" firstAttribute="width" relation="greaterThanOrEqual" secondItem="vbb-fj-tYV" secondAttribute="width" id="JWF-S1-tRl"/>
                             <constraint firstItem="pi0-pp-gBj" firstAttribute="centerY" secondItem="Icd-e3-JDl" secondAttribute="centerY" id="PEy-4X-W22"/>
                             <constraint firstItem="O9k-bn-Rhq" firstAttribute="height" secondItem="z7x-XB-cwN" secondAttribute="height" id="Wwi-eu-9i2"/>
                             <constraint firstItem="vbb-fj-tYV" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="XpG-Lu-4hC"/>
                             <constraint firstItem="z7x-XB-cwN" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="h2z-CD-WTJ"/>
                             <constraint firstItem="4cg-Hl-O4b" firstAttribute="top" secondItem="pi0-pp-gBj" secondAttribute="bottom" constant="8" id="jti-5v-aHk"/>
                             <constraint firstAttribute="trailing" secondItem="O9k-bn-Rhq" secondAttribute="trailing" id="k71-wU-lqT"/>
+                            <constraint firstAttribute="trailing" secondItem="ukK-PQ-Ipz" secondAttribute="trailing" constant="2" id="lqb-8g-8Xe"/>
                             <constraint firstItem="O9k-bn-Rhq" firstAttribute="top" secondItem="4cg-Hl-O4b" secondAttribute="bottom" constant="11" id="n6t-4T-Lde"/>
                             <constraint firstItem="pi0-pp-gBj" firstAttribute="top" secondItem="vbb-fj-tYV" secondAttribute="bottom" constant="8" id="u7w-Ir-hQl"/>
+                            <constraint firstItem="O9k-bn-Rhq" firstAttribute="top" secondItem="ukK-PQ-Ipz" secondAttribute="bottom" constant="3" id="vVv-5G-KWe"/>
                         </constraints>
                     </view>
                     <connections>
@@ -78,6 +88,7 @@
                         <outlet property="degreeLbl" destination="4cg-Hl-O4b" id="LkA-9l-iQv"/>
                         <outlet property="imgView" destination="Icd-e3-JDl" id="33n-An-CTk"/>
                         <outlet property="mapView" destination="z7x-XB-cwN" id="QxZ-7e-Gb7"/>
+                        <outlet property="table" destination="O9k-bn-Rhq" id="6vV-Bl-bK9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -85,4 +96,7 @@
             <point key="canvasLocation" x="112.8" y="121.88905547226388"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="box" width="150" height="100"/>
+    </resources>
 </document>

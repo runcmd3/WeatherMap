@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
 
@@ -16,11 +17,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var degreeLbl: UILabel!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var imgView: UIImageView!
+    @IBOutlet weak var table: UITableView!
     
     var degree:Int!
     var condition:String!
     var imgURL:String!
     var city:String!
+    var slat:Int!
+    var slon:Int!
     var exists = true
     
     let locationManager = CLLocationManager()
@@ -33,13 +37,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.distanceFilter = 100
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.distanceFilter = 1000
             locationManager.startUpdatingLocation()
         }
-        
-        
-        
+        loadSaved()
     }
 
     //Move map location
@@ -56,6 +58,57 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         centerMapOnLocation(location: CLLocation(latitude: locValue.latitude, longitude: locValue.longitude))
         requestWeather(withQuery: "\(locValue.latitude),\(locValue.longitude)")
     }
+    
+    func loadSaved() {
+        for result in getSaved() {
+            if let name = result.value(forKey: "name") {
+                print(name)
+                let label = UILabel()
+                label.text = (name as! String)
+                table.addSubview(label)
+            }
+        }
+        
+    }
+    func getSaved()-> [NSManagedObject] {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName:"Places")
+        request.returnsObjectsAsFaults = false
+        print("loading")
+        do{
+            let results = try context.fetch(request)
+            if results.count > 0 {
+                return results as! [NSManagedObject]
+            }
+        } catch {
+            
+        }
+        return []
+    }
+    
+    func savePlace() {
+        for result in getSaved() {
+            if let name = result.value(forKey: "name") {
+                if name as! String == self.city {
+                    return
+                }
+            }
+            
+        }
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let context = appDelegate.persistentContainer.viewContext
+        let newPlace = NSEntityDescription.insertNewObject(forEntityName: "Places", into: context)
+        newPlace.setValue(self.city, forKey: "name")
+        do {
+            try context.save()
+        } catch {
+            print("error")
+        }
+
+    }
+    
     func requestWeather(withQuery:String) {
         let urlRequest = URLRequest(url: URL(string: "https://api.apixu.com/v1/current.json?key=fcb109a886a64bd796d183043172805&q=\(withQuery)")!)
         let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
@@ -91,7 +144,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             self.cityLbl.text = self.city
                             self.conditionLbl.text = self.condition
                             self.imgView.downloadImage(from: self.imgURL!)
-                            
+                            self.savePlace()
                         }else {
                             self.degreeLbl.isHidden = true
                             self.conditionLbl.isHidden = true
