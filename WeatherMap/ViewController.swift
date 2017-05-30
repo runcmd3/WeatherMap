@@ -17,15 +17,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var degreeLbl: UILabel!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var imgView: UIImageView!
-    @IBOutlet weak var table: UITableView!
     
     var degree:Int!
+    var rh:Int!
     var condition:String!
     var imgURL:String!
     var city:String!
-    var slat:Int!
-    var slon:Int!
+    var slat:Double!
+    var slon:Double!
     var exists = true
+    var locationEnabled = true
+    var enableTimer:Timer!
     
     let locationManager = CLLocationManager()
     
@@ -53,22 +55,34 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     //Delegate method for location change
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        print(locValue)
-        centerMapOnLocation(location: CLLocation(latitude: locValue.latitude, longitude: locValue.longitude))
-        requestWeather(withQuery: "\(locValue.latitude),\(locValue.longitude)")
+        if locationEnabled {
+            locationEnabled = false
+            enableTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(enableLocation), userInfo: nil, repeats: false)
+            let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+            print(locValue)
+            centerMapOnLocation(location: CLLocation(latitude: locValue.latitude, longitude: locValue.longitude))
+            slon = locValue.longitude
+            slat = locValue.latitude
+            requestWeather(withQuery: "\(locValue.latitude),\(locValue.longitude)")
+        }
+    }
+    func enableLocation() {
+        locationEnabled = true
+        print("enabled")
     }
     
     func loadSaved() {
         for result in getSaved() {
             if let name = result.value(forKey: "name") {
                 print(name)
-                let label = UILabel()
-                label.text = (name as! String)
-                table.addSubview(label)
+            }
+            if let lon = result.value(forKey: "longitude") {
+                print(lon)
+            }
+            if let lat = result.value(forKey: "latitude") {
+                print(lat)
             }
         }
-        
     }
     func getSaved()-> [NSManagedObject] {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -86,23 +100,40 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
         return []
     }
-    
     func savePlace() {
+        var duplicate: NSManagedObject? = nil
         for result in getSaved() {
             if let name = result.value(forKey: "name") {
                 if name as! String == self.city {
-                    return
+                    duplicate = result//return
                 }
             }
-            
         }
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         let context = appDelegate.persistentContainer.viewContext
+        
+        if duplicate != nil {
+            let child = (self.childViewControllers.last! as! TableViewController)
+            child.listItems.remove(at: child.listItems.index(of: duplicate!)!)
+            context.delete(duplicate!)
+        }
+        
         let newPlace = NSEntityDescription.insertNewObject(forEntityName: "Places", into: context)
+        
         newPlace.setValue(self.city, forKey: "name")
+        newPlace.setValue(self.slat, forKey: "latitude")
+        newPlace.setValue(self.slon, forKey: "longitude")
+        newPlace.setValue(self.imgURL, forKey: "image")
+        newPlace.setValue(self.rh, forKey: "humidity")
+        newPlace.setValue(self.degree, forKey: "temperature")
+        newPlace.setValue(self.condition, forKey: "condition")
+        
+        
+        
         do {
             try context.save()
+            (self.childViewControllers.last as! TableViewController).addLast(add: newPlace)
         } catch {
             print("error")
         }
@@ -122,6 +153,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                         if let temp = current["temp_f"] as? Int {
                            self.degree = temp
                         }
+                        if let rh = current["humidity"] as? Int {
+                            self.rh = rh
+                        }
                         if let condition = current["condition"] as? [String : AnyObject] {
                            self.condition = condition["text"] as! String
                             let icon = condition["icon"] as! String
@@ -140,7 +174,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                             self.degreeLbl.isHidden = false
                             self.conditionLbl.isHidden = false
                             self.imgView.isHidden = false
-                            self.degreeLbl.text = "\(self.degree.description)°F"
+                            self.degreeLbl.text = "\(self.rh.description)% \(self.degree.description)°F"
                             self.cityLbl.text = self.city
                             self.conditionLbl.text = self.condition
                             self.imgView.downloadImage(from: self.imgURL!)
