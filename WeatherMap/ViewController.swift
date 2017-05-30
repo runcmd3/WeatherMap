@@ -66,6 +66,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             requestWeather(withQuery: "\(locValue.latitude),\(locValue.longitude)")
         }
     }
+    //Prevents multiple calls to update
     func enableLocation() {
         locationEnabled = true
         print("enabled")
@@ -84,6 +85,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
+    //Get all saved objects from coredata
     func getSaved()-> [NSManagedObject] {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
@@ -100,6 +102,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
         return []
     }
+    //Save a place to core data
     func savePlace() {
         var duplicate: NSManagedObject? = nil
         for result in getSaved() {
@@ -139,7 +142,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
 
     }
-    
+    //Make a request to Weather API
     func requestWeather(withQuery:String) {
         let urlRequest = URLRequest(url: URL(string: "https://api.apixu.com/v1/current.json?key=fcb109a886a64bd796d183043172805&q=\(withQuery)")!)
         let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
@@ -196,7 +199,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         task.resume()
     }
 }
-
+//extension to load a downloaded image into imageview
 extension UIImageView {
     
     func downloadImage(from url: String) {

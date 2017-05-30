@@ -12,7 +12,7 @@ class TableViewCell: UITableViewCell {
     var longitude:Double!
     var latitude:Double!
     
-    
+    //custom table
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var myImage: UIImageView!
     @IBOutlet weak var condition: UILabel!
