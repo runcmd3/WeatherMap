@@ -49,6 +49,8 @@ class TableViewController: UITableViewController {
         let par = (parent! as! ViewController)
         let lat = cell.latitude!
         let lon = cell.longitude!
+        par.slat = lat
+        par.slon = lon
         par.requestWeather(withQuery: "\(lat.description),\(lon.description)")
         par.centerMapOnLocation(location: CLLocation(latitude: lat , longitude: lon ))
     }
